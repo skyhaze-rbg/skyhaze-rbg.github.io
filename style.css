@@ -27,7 +27,7 @@
 /* Remove Bootstrap styling */
 
 .row,
-.row > *,
+.row>*,
 button,
 div,
 h1,
@@ -61,6 +61,7 @@ html,
 body,
 #app {
     height: 100%;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
 body {
@@ -70,15 +71,19 @@ body {
     flex-direction: column;
     justify-content: center;
     overflow-y: hidden;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #ffffff;
 }
 
 nav {
-    border-bottom: 1px solid rgb(244, 245, 246);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     height: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 nav .navbar-brand {
@@ -96,6 +101,8 @@ nav .title {
     text-align: center;
     font-size: 1.5rem;
     line-height: 100%;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 nav .right {
@@ -132,6 +139,8 @@ nav #stat-button {
     display: flex;
     flex-direction: column;
     align-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 #board-container {
@@ -140,6 +149,11 @@ nav #stat-button {
     align-items: center;
     flex-grow: 1;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 10px 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 #board-container #board {
@@ -180,19 +194,23 @@ nav #stat-button {
 }
 
 @keyframes Shake {
+
     10%,
     90% {
         transform: translateX(-1px);
     }
+
     20%,
     80% {
         transform: translateX(2px);
     }
+
     30%,
     50%,
     70% {
         transform: translateX(-4px);
     }
+
     40%,
     60% {
         transform: translateX(4px);
@@ -209,14 +227,19 @@ nav #stat-button {
     font-weight: bold;
     vertical-align: middle;
     box-sizing: border-box;
-    color: #121213;
+    color: #ffffff;
     text-transform: uppercase;
     user-select: none;
-    border: 2px solid #d3d6da;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 
 .tile[data-status="tbd"] {
-    border: 2px solid #878a8c;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .tile[data-status="correct"] {
@@ -251,6 +274,7 @@ nav #stat-button {
         transform: scale(0.8);
         opacity: 0;
     }
+
     40% {
         transform: scale(1.1);
         opacity: 1;
@@ -267,9 +291,11 @@ nav #stat-button {
     0% {
         transform: rotateX(0);
     }
+
     50% {
         transform: rotateX(-90deg);
     }
+
     100% {
         transform: rotateX(0);
     }
@@ -285,6 +311,7 @@ nav #stat-button {
     0% {
         transform: rotateX(0);
     }
+
     100% {
         transform: rotateX(-90deg);
     }
@@ -300,6 +327,7 @@ nav #stat-button {
     0% {
         transform: rotateX(-90deg);
     }
+
     100% {
         transform: rotateX(0);
     }
@@ -311,22 +339,28 @@ nav #stat-button {
 }
 
 @keyframes Bounce {
+
     0%,
     20% {
         transform: translateY(0);
     }
+
     40% {
         transform: translateY(-30px);
     }
+
     50% {
         transform: translateY(5px);
     }
+
     60% {
         transform: translateY(-15px);
     }
+
     80% {
         transform: translateY(2px);
     }
+
     100% {
         transform: translateY(0);
     }
@@ -341,6 +375,11 @@ nav #stat-button {
 
 #keyboard-container {
     margin: 0 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 #keyboard {
@@ -364,17 +403,26 @@ nav #stat-button {
     border: 0;
     padding: inherit;
     height: 58px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     user-select: none;
-    background-color: #d3d6da;
-    color: #000000;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#keyboard .row button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #keyboard .row button svg {
@@ -412,15 +460,17 @@ nav #stat-button {
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgb(24 24 24 / 80%);
+    background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
     font-size: 14px;
     z-index: 9999;
     visibility: visible;
     opacity: 1;
     transition: opacity 2s linear;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* overriding bootstrap */
