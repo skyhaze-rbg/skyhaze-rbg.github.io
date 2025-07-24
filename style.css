@@ -384,6 +384,8 @@ nav #stat-button {
 
 #keyboard {
     user-select: none;
+    width: 100%;
+    max-width: 100%;
 }
 
 #keyboard .row {
@@ -391,6 +393,8 @@ nav #stat-button {
     justify-content: center;
     margin: 0 auto 8px;
     touch-action: manipulation;
+    width: 100%;
+    gap: 4px;
 }
 
 #keyboard .row .half {
@@ -417,6 +421,45 @@ nav #stat-button {
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 0;
+    font-size: 14px;
+}
+
+/* Mobile responsive improvements */
+@media only screen and (max-width: 480px) {
+    #keyboard-container {
+        margin: 0 4px;
+        padding: 10px;
+    }
+
+    #keyboard .row {
+        gap: 3px;
+        margin-bottom: 6px;
+    }
+
+    #keyboard .row button {
+        height: 50px;
+        font-size: 12px;
+        min-width: 24px;
+    }
+
+    #keyboard .row button[data-key="↵"],
+    #keyboard .row button[data-key="←"] {
+        font-size: 10px;
+        flex: 1.5;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    #keyboard .row button {
+        height: 45px;
+        font-size: 11px;
+        min-width: 20px;
+    }
+
+    #keyboard .row {
+        gap: 2px;
+    }
 }
 
 #keyboard .row button:hover {

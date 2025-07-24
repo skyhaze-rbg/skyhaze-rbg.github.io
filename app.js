@@ -74,16 +74,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function handleResetGame() {
         console.log("=== RESET GAME STARTED ===");
         
+        // Stop interactions during reset
+        stopInteraction();
+        
         // Clear localStorage
         window.localStorage.removeItem("HSAKA_WORDLE");
         console.log("localStorage cleared");
         
-        // Reset game state
+        // Reset game state completely
         GameState.attemptCount = 0;
         GameState.userAttempts = [];
         GameState.highlightedRows = [];
         GameState.status = "in-progress";
-        console.log("GameState reset:", GameState);
         
         // Get a NEW random answer using the global function
         if (window.getRandomAnswer) {
@@ -91,13 +93,28 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log("New random word:", GameState.answer);
         } else {
             console.error("getRandomAnswer function not available!");
+            // Fallback to a default word
+            GameState.answer = "apple";
         }
         
-        // Clear the board
+        // Reset keyboard state in GameState using the global function
+        if (window.getKeyboard) {
+            GameState.keyboard = window.getKeyboard();
+            console.log("Keyboard state reset in GameState");
+        } else {
+            console.error("getKeyboard function not available!");
+            // Fallback to empty keyboard
+            GameState.keyboard = {};
+        }
+        
+        console.log("GameState reset:", GameState);
+        
+        // Clear the board completely
         TILES.forEach(tile => {
             tile.textContent = "";
             tile.dataset.status = "empty";
             tile.removeAttribute("data-animation");
+            tile.style.animationDelay = "";
         });
         console.log("Board cleared");
         
@@ -107,13 +124,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         console.log("Keyboard colors reset");
         
-        // Reset keyboard state in GameState using the global function
-        if (window.getKeyboard) {
-            GameState.keyboard = window.getKeyboard();
-            console.log("Keyboard state reset in GameState");
-        } else {
-            console.error("getKeyboard function not available!");
-        }
+        // Clear any row status (like invalid shake)
+        ROWS.forEach(row => {
+            row.removeAttribute("data-status");
+        });
+        
+        // Save the new game state
+        GameState.save();
+        
+        // Restart interactions
+        startInteraction();
         
         console.log("=== RESET GAME COMPLETE ===");
     }
