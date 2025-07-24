@@ -20,9 +20,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("KEYBOARD_KEYS found:", KEYBOARD_KEYS.length);
 
     /** Start the whole game (Student) */
-    async function startWebGame() {
+    async function startWebGame(customWord = null) {
         console.log("Starting web game...");
-        await GameState.loadOrStart();
+        
+        // If custom word provided (for friends challenge), use it
+        if (customWord) {
+            await GameState.startWithWord(customWord);
+        } else {
+            await GameState.loadOrStart();
+        }
+        
         console.log("GameState loaded:", GameState);
         
         // Clear all tiles to ensure clean start
@@ -36,6 +43,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         startInteraction();
         console.log("Game started and interactions bound");
     }
+    
+    // Expose the initialization function globally
+    window.initializeGame = startWebGame;
 
     /** Bind events */
     function startInteraction() {
@@ -77,7 +87,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Stop interactions during reset
         stopInteraction();
         
-        // Clear localStorage
+        // Clear localStorage (but preserve game mode)
+        const currentMode = window.currentGameMode;
+        const currentChallengeWord = window.challengeWord;
         window.localStorage.removeItem("HSAKA_WORDLE");
         console.log("localStorage cleared");
         
@@ -87,8 +99,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         GameState.highlightedRows = [];
         GameState.status = "in-progress";
         
-        // Get a NEW random answer using the global function
-        if (window.getRandomAnswer) {
+        // Get a NEW answer based on game mode
+        if (currentChallengeWord && currentMode === 'friends') {
+            // Keep the same challenge word
+            GameState.answer = currentChallengeWord.toLowerCase();
+            console.log("Reusing challenge word");
+        } else if (window.getRandomAnswer) {
             GameState.answer = window.getRandomAnswer();
             console.log("New random word:", GameState.answer);
         } else {
@@ -354,6 +370,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // If success or failed, stop interaction
         stopInteraction();
+        
+        // Stop timer if in timer mode
+        if (window.currentGameMode === 'timer' && window.stopTimer) {
+            window.stopTimer();
+        }
 
         if (newStatus === "success") {
             handleSuccessAnimation(index);
@@ -432,5 +453,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    await startWebGame();
+    // Don't auto-start - wait for user to select game mode from menu
+    // await startWebGame();
 });

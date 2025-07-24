@@ -17,6 +17,7 @@
   <script src="./constants.js"></script>
   <script src="./wordle.js"></script>
   <script src="./state.js"></script>
+  <script src="./game-modes.js"></script>
   <script src="./app.js"></script>
   <script>
     // Simple test to check if scripts are loading
@@ -30,13 +31,60 @@
 <body>
   <!-- App div -->
   <div id="app">
+    <!-- Main Menu -->
+    <div id="main-menu" class="menu-container">
+      <h1 class="menu-title">Skydle</h1>
+      <div class="menu-subtitle">Choose Your Word Adventure</div>
+      <div class="menu-buttons">
+        <div class="main-modes">
+          <button class="menu-btn zen-mode-btn" onclick="window.location.href='zen-mode.html'">
+            <span class="mode-icon">🧘</span>
+            <span class="mode-name">Zen Mode</span>
+            <span class="mode-desc">Classic relaxed gameplay</span>
+            <div class="mode-features">
+              <span>• No time pressure</span>
+            </div>
+          </button>
+          <button class="menu-btn timer-mode-btn" onclick="window.location.href='timer-mode.html'">
+            <span class="mode-icon">⏱️</span>
+            <span class="mode-name">Timer Mode</span>
+            <span class="mode-desc">5 minute challenge</span>
+            <div class="mode-features">
+              <span>• Race against time</span>
+            </div>
+          </button>
+        </div>
+        <div class="social-modes">
+          <button class="menu-btn friends-mode-btn" onclick="window.location.href='friends-challenge.html'">
+            <div class="dev-badge">Still in Development</div>
+            <span class="mode-icon">👥</span>
+            <span class="mode-name">Friends Challenge</span>
+            <span class="mode-desc">Create or join word challenges</span>
+            <div class="mode-features">
+              <span>• Custom words</span>
+              <span>• Share with friends</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
     <!-- Nav -->
-    <nav class="navbar navbar-light">
+    <nav class="navbar navbar-light" style="display: none;">
       <div id="nav-container" class="container-fluid">
+        <button type="button" id="menu-button" class="menu-nav-btn">
+          ☰
+        </button>
         <div class="title"
           style="text-align: center; flex-grow: 1; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold;">
-          Skydle</div>
+          <span id="game-mode-title">Skydle</span>
+        </div>
         <div class="right" id="nav-container-right">
+          <div id="timer-display" style="display: none; margin-right: 15px; font-size: 1.2rem; font-weight: bold;">
+            5:00
+          </div>
           <button type="button" id="reset-button"
             style="margin-right: 10px; padding: 5px 10px; background: #3a3a3c; color: white; border: none; border-radius: 4px; cursor: pointer;">
             New Game
@@ -49,7 +97,7 @@
     </nav>
 
     <!-- Game div -->
-    <div id="game">
+    <div id="game" style="display: none;">
       <div id="board-container">
         <div id="board">
           <div class="row">

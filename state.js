@@ -74,4 +74,19 @@ const GameState = {
         this.answer = answer;
         this.status = status;
     },
+    async startWithWord(word) {
+        // Start a fresh game with a specific word
+        this.attemptCount = 0;
+        this.userAttempts = [];
+        this.highlightedRows = [];
+        this.keyboard = {};
+        this.answer = word.toLowerCase();
+        this.status = "in-progress";
+        
+        // Initialize keyboard
+        const keys = "qwertyuiopasdfghjklzxcvbnm".split("");
+        keys.forEach(key => {
+            this.keyboard[key] = "unused";
+        });
+    },
 };
