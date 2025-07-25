@@ -8,7 +8,7 @@ const testWordList = [
     "cheap",
 ];
 
-let wordList = {valid: [], playable: []};
+window.wordList = {valid: [], playable: []};
 
 const rating = {
     unknown: 0,
@@ -74,7 +74,7 @@ function startGame(round) {
 }
 
 function isInputCorrect(word) {
-    return wordList.playable.includes(word) || wordList.valid.includes(word);
+    return window.wordList.playable.includes(word) || window.wordList.valid.includes(word);
 }
 
 function retry(word) {
@@ -177,7 +177,7 @@ function isToday(timestamp) {
 
 async function loadOrStartGame(debug) {
     console.log("Loading word list...");
-    wordList = await fetch("./src/fixtures/words.json")
+    window.wordList = await fetch("./src/fixtures/words.json")
         .then(response => {
             console.log("Word list response:", response);
             return response.json();

@@ -114,14 +114,20 @@ async function generateChallengeCode() {
         return;
     }
     
-    // Simple encoding - in production, use proper encryption
-    const code = btoa(word).substring(0, 6).toUpperCase();
+    // Encode the word directly into the code (no backend needed)
+    // Use a simple reversible encoding
+    const encoded = btoa(word).replace(/=/g, ''); // Remove padding
+    // Take first 6 characters and add a checksum character
+    const checksum = word.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 26;
+    const checksumChar = String.fromCharCode(65 + checksum); // A-Z
+    const code = (encoded.substring(0, 5) + checksumChar).toUpperCase();
     
     document.getElementById('challenge-code').textContent = code;
     document.getElementById('code-display').style.display = 'block';
     
-    // Store the mapping temporarily (in production, use a backend)
+    // Still store locally for the creator's reference
     localStorage.setItem(`challenge_${code}`, word);
+    localStorage.setItem('last_created_code', code);
 }
 
 function copyCode() {
@@ -139,15 +145,43 @@ function joinChallengeWithCode() {
         return;
     }
     
-    // Retrieve the word (in production, fetch from backend)
-    const word = localStorage.getItem(`challenge_${code}`);
-    
-    if (!word) {
-        alert('Invalid challenge code');
-        return;
+    try {
+        // Decode the word from the code itself
+        const encodedPart = code.substring(0, 5);
+        const checksumChar = code.substring(5, 6);
+        
+        // Try different padding options
+        let decoded = null;
+        for (let padding of ['', '=', '==']) {
+            try {
+                const testDecode = atob(encodedPart + padding);
+                if (testDecode.length === 5 && /^[A-Z]+$/.test(testDecode)) {
+                    // Verify checksum
+                    const checksum = testDecode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 26;
+                    const expectedChecksumChar = String.fromCharCode(65 + checksum);
+                    
+                    if (expectedChecksumChar === checksumChar) {
+                        decoded = testDecode;
+                        break;
+                    }
+                }
+            } catch (e) {
+                // Try next padding option
+            }
+        }
+        
+        if (!decoded) {
+            alert('Invalid challenge code. Please check and try again.');
+            return;
+        }
+        
+        // Start game with decoded word as the answer (not revealing it)
+        startGame('friends', decoded.toLowerCase());
+        
+    } catch (error) {
+        console.error('Error decoding challenge:', error);
+        alert('Invalid challenge code format.');
     }
-    
-    startGame('friends', word);
 }
 
 // Event listeners

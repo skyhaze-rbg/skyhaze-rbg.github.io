@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function shakeRow(currentGuess, index) {
         stopInteraction();
 
-        alert(`${currentGuess.toUpperCase()} not in world list`);
+        alert(`${currentGuess.toUpperCase()} not in word list`);
 
         ROWS[index].dataset.status = "invalid";
         ROWS[index].onanimationend = () => {

@@ -83,6 +83,22 @@ const GameState = {
         this.answer = word.toLowerCase();
         this.status = "in-progress";
         
+        // Load word list for validation (same as loadOrStartGame)
+        console.log("Loading word list for friends challenge...");
+        window.wordList = await fetch("./src/fixtures/words.json")
+            .then(response => {
+                console.log("Word list response:", response);
+                return response.json();
+            })
+            .then(json => {
+                console.log("Word list loaded:", json.valid.length, "valid words,", json.playable.length, "playable words");
+                return json;
+            })
+            .catch(error => {
+                console.error("Error loading word list:", error);
+                return {valid: [], playable: []};
+            });
+        
         // Initialize keyboard
         const keys = "qwertyuiopasdfghjklzxcvbnm".split("");
         keys.forEach(key => {
