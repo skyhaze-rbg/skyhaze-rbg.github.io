@@ -87,11 +87,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Stop interactions during reset
         stopInteraction();
         
-        // Clear localStorage (but preserve game mode)
-        const currentMode = window.currentGameMode;
+        // Clear localStorage for current game mode (but preserve game mode)
+        const currentMode = window.currentGameMode || 'default';
         const currentChallengeWord = window.challengeWord;
-        window.localStorage.removeItem("HSAKA_WORDLE");
-        console.log("localStorage cleared");
+        const storageKey = `HSAKA_WORDLE_${currentMode.toUpperCase()}`;
+        window.localStorage.removeItem(storageKey);
+        console.log(`localStorage cleared for mode: ${currentMode}, key: ${storageKey}`);
         
         // Reset game state completely
         GameState.attemptCount = 0;

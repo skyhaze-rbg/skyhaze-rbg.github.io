@@ -151,7 +151,11 @@ function updateGameStatus(currentGuess, answer, attemptCount, round) {
 }
 
 function saveGame(gameState) {
-    window.localStorage.setItem("HSAKA_WORDLE", JSON.stringify(gameState));
+    // Use different localStorage keys for different game modes
+    const gameMode = window.currentGameMode || 'default';
+    const storageKey = `HSAKA_WORDLE_${gameMode.toUpperCase()}`;
+    console.log(`Saving game state for mode: ${gameMode}, key: ${storageKey}`);
+    window.localStorage.setItem(storageKey, JSON.stringify(gameState));
 }
 
 function getTodaysAnswer() {
@@ -168,6 +172,17 @@ function getRandomAnswer() {
 
 // Make function available globally
 window.getRandomAnswer = getRandomAnswer;
+
+// Function to clear keyboard state for the current game mode
+function clearCurrentModeKeyboard() {
+    const gameMode = window.currentGameMode || 'default';
+    const storageKey = `HSAKA_WORDLE_${gameMode.toUpperCase()}`;
+    console.log(`Clearing keyboard state for mode: ${gameMode}`);
+    window.localStorage.removeItem(storageKey);
+}
+
+// Make function available globally
+window.clearCurrentModeKeyboard = clearCurrentModeKeyboard;
 
 function isToday(timestamp) {
     const today = new Date();
@@ -200,10 +215,15 @@ async function loadOrStartGame(debug) {
     }
     console.log("Today's answer:", answer);
     
-    const prevGame = JSON.parse(window.localStorage.getItem("HSAKA_WORDLE"));
+    // Use different localStorage keys for different game modes
+    const gameMode = window.currentGameMode || 'default';
+    const storageKey = `HSAKA_WORDLE_${gameMode.toUpperCase()}`;
+    console.log(`Loading game state for mode: ${gameMode}, key: ${storageKey}`);
+    
+    const prevGame = JSON.parse(window.localStorage.getItem(storageKey));
 
     if (prevGame && isToday(prevGame.timestamp)) {
-        console.log("Loading previous game state");
+        console.log("Loading previous game state for mode:", gameMode);
         return {
             ...prevGame,
             answer,

@@ -99,10 +99,16 @@ const GameState = {
                 return {valid: [], playable: []};
             });
         
-        // Initialize keyboard
-        const keys = "qwertyuiopasdfghjklzxcvbnm".split("");
-        keys.forEach(key => {
-            this.keyboard[key] = "unused";
-        });
+        // Initialize keyboard with clean state
+        if (window.getKeyboard) {
+            this.keyboard = window.getKeyboard();
+        } else {
+            // Fallback initialization
+            const keys = "qwertyuiopasdfghjklzxcvbnm".split("");
+            this.keyboard = {};
+            keys.forEach(key => {
+                this.keyboard[key] = "unknown";
+            });
+        }
     },
 };
